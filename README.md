@@ -1,0 +1,167 @@
+# Customer Shopping Behavior Analytics & Business Intelligence Dashboard
+
+An end-to-end data analytics project that transforms raw customer shopping data into reusable Python features, PostgreSQL analysis, SQL business insights, and an interactive Power BI dashboard.
+
+## Project at a glance
+
+| Area | Implementation |
+|---|---|
+| Data source | `data/customer.csv` |
+| Source size | 3,900 records × 18 original attributes |
+| Data preparation | Python + Pandas |
+| Database | PostgreSQL |
+| SQL analytics | 10 business questions + KPI queries |
+| BI | Power BI |
+| Testing | Pytest |
+| Configuration | Environment variables via `.env` |
+
+## Business questions
+
+The SQL layer evaluates:
+
+1. Revenue by gender
+2. High-value purchases made with discounts
+3. Highest-rated products
+4. Standard vs Express shipping spend
+5. Subscription vs non-subscription performance
+6. Products with the highest discount rates
+7. New / Returning / Loyal customer segments
+8. Top products within each category
+9. Subscription behavior among repeat buyers
+10. Revenue contribution by age group
+
+## Data preparation
+
+The reusable transformation pipeline in `src/customer_analytics/transform.py` performs:
+
+- Column-name standardization
+- Category-level median imputation for missing review ratings
+- Quartile-based age segmentation
+- Purchase-frequency-to-days conversion
+- Redundancy validation and removal of `promo_code_used`
+
+The transformation logic is separated from the notebook so it can be reused in scripts, tests, or production-style workflows.
+
+## Repository structure
+
+```text
+Customer_Shopping_Behavior_Analytics/
+├── data/
+│   └── customer.csv
+├── dashboard/
+│   ├── README.md
+│   └── dashboard_preview.pdf
+├── docs/
+│   ├── architecture.md
+│   ├── data_dictionary.md
+│   └── methodology.md
+├── notebooks/
+│   └── customer_behavior_analysis.ipynb
+├── sql/
+│   ├── analysis_queries.sql
+│   ├── kpi_queries.sql
+│   └── schema.sql
+├── src/
+│   └── customer_analytics/
+│       ├── __init__.py
+│       ├── __main__.py
+│       ├── db.py
+│       ├── pipeline.py
+│       └── transform.py
+├── tests/
+│   └── test_transform.py
+├── .env.example
+├── .gitignore
+├── pyproject.toml
+└── requirements.txt
+```
+
+## Setup
+
+### 1. Create a virtual environment
+
+**Windows PowerShell:**
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### 2. Prepare the dataset
+
+Run from the repository root:
+
+```powershell
+python -m customer_analytics.pipeline --input data/customer.csv --output outputs/customer_clean.csv
+```
+
+If the package is not installed, use:
+
+```powershell
+$env:PYTHONPATH = "src"
+python -m customer_analytics.pipeline --input data/customer.csv --output outputs/customer_clean.csv
+```
+
+### 3. PostgreSQL configuration
+
+Copy `.env.example` to `.env` and set your local PostgreSQL credentials. **Do not commit `.env` or passwords.**
+
+Example:
+
+```text
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=customer_behaviour
+DB_USER=postgres
+DB_PASSWORD=your_password_here
+DB_TABLE=customer
+```
+
+The database helper in `src/customer_analytics/db.py` reads these values securely from the environment.
+
+### 4. Run the notebook
+
+```powershell
+$env:PYTHONPATH = "src"
+jupyter notebook notebooks/customer_behavior_analysis.ipynb
+```
+
+### 5. Run tests
+
+```powershell
+$env:PYTHONPATH = "src"
+pytest
+```
+
+## PostgreSQL / SQL workflow
+
+1. Create the database `customer_behaviour` in PostgreSQL.
+2. Prepare the cleaned CSV with the Python pipeline.
+3. Load the cleaned dataset into the `customer` table using the database helper or `pandas.to_sql`.
+4. Run `sql/analysis_queries.sql` for business analysis.
+5. Run `sql/kpi_queries.sql` to reconcile dashboard KPI values.
+6. Connect Power BI to the PostgreSQL `customer` table and build/refresh the dashboard.
+
+## Dashboard
+
+The supplied Power BI preview is available at `dashboard/dashboard_preview.pdf`.
+
+The preview shows KPI cards for average rating, customer count, and average purchase amount, plus category, subscription, seasonal, age-group, and purchasing-frequency views.
+
+## Engineering practices included
+
+- Modular transformation functions instead of notebook-only logic
+- No hard-coded database credentials
+- Environment-based configuration
+- Deterministic data-quality checks
+- Automated unit tests
+- SQL separated from Python application code
+- Data dictionary and methodology documentation
+- Architecture documentation
+- Power BI reconciliation queries
+- Git-friendly repository structure
+
+## Portfolio / resume positioning
+
+This project demonstrates an end-to-end **Data Analyst / BI workflow**: data quality assessment, feature engineering, relational database analysis, advanced SQL, customer segmentation, KPI development, and business intelligence visualization.
