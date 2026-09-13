@@ -59,8 +59,6 @@ Customer_Shopping_Behavior_Analytics/
 │   └── customer_behavior_analysis.ipynb
 ├── sql/
 │   ├── analysis_queries.sql
-│   ├── kpi_queries.sql
-│   └── schema.sql
 ├── src/
 │   └── customer_analytics/
 │       ├── __init__.py
@@ -131,6 +129,7 @@ jupyter notebook notebooks/customer_behavior_analysis.ipynb
 
 ```powershell
 $env:PYTHONPATH = "src"
+python -m customer_analytics.load_to_postgres
 pytest
 ```
 
@@ -138,10 +137,8 @@ pytest
 
 1. Create the database `customer_behaviour` in PostgreSQL.
 2. Prepare the cleaned CSV with the Python pipeline.
-3. Load the cleaned dataset into the `customer` table using the database helper or `pandas.to_sql`.
+3. Load the cleaned dataset into the `customer` table using the database 
 4. Run `sql/analysis_queries.sql` for business analysis.
-5. Run `sql/kpi_queries.sql` to reconcile dashboard KPI values.
-6. Connect Power BI to the PostgreSQL `customer` table and build/refresh the dashboard.
 
 ## Dashboard
 
