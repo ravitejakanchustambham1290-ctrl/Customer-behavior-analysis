@@ -158,7 +158,3 @@ The preview shows KPI cards for average rating, customer count, and average purc
 - Architecture documentation
 - Power BI reconciliation queries
 - Git-friendly repository structure
-
-## Portfolio / resume positioning
-
-This project demonstrates an end-to-end **Data Analyst / BI workflow**: data quality assessment, feature engineering, relational database analysis, advanced SQL, customer segmentation, KPI development, and business intelligence visualization.
